@@ -113,41 +113,17 @@ const AlgorithmVisualizer: React.FC<AlgorithmVisualizerProps> = ({
     if (stepIndex >= 0 && stepIndex < steps.length) {
       setCurrentStepIndex(stepIndex);
       setCurrentStep(steps[stepIndex]);
-      
-      if (sessionState) {
-        const newState = {
-          ...sessionState,
-          currentStep: stepIndex,
-          isPlaying: false
-        };
-        onSessionStateUpdate(newState);
-      }
     }
   };
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
-    if (sessionState) {
-      const newState = {
-        ...sessionState,
-        isPlaying: !isPlaying
-      };
-      onSessionStateUpdate(newState);
-    }
   };
 
   const handleReset = () => {
     setCurrentStepIndex(0);
     setCurrentStep(steps[0] || null);
     setIsPlaying(false);
-    if (sessionState) {
-      const newState = {
-        ...sessionState,
-        currentStep: 0,
-        isPlaying: false
-      };
-      onSessionStateUpdate(newState);
-    }
   };
 
   // Auto-play functionality
