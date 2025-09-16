@@ -1,0 +1,26 @@
+{
+  "name": "collaborative-algorithm-visualizer",
+  "version": "1.0.0",
+  "description": "A real-time, collaborative web application for visualizing algorithm execution step-by-step",
+  "scripts": {
+    "start": "./start.sh",
+    "install-all": "cd shared && npm install && cd ../backend && npm install && cd ../frontend && npm install",
+    "build-all": "cd shared && npm run build && cd ../backend && npm run build && cd ../frontend && npm run build",
+    "dev": "./start.sh"
+  },
+  "keywords": [
+    "algorithm",
+    "visualization",
+    "collaborative",
+    "real-time",
+    "websocket",
+    "react",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
