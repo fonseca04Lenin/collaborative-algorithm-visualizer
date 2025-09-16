@@ -1,15 +1,13 @@
-# Collaborative Algorithm Visualizer
+# Algorithm Visualizer
 
-A real-time, collaborative web application for visualizing algorithm execution step-by-step. Multiple users can join the same session, watch each other's cursors live, and record/replay algorithm runs with auto-generated explanations.
+An interactive web application for visualizing algorithm execution step-by-step with auto-generated explanations.
 
 ## Features
 
-- **Real-time Collaboration**: Multiple users can join sessions and see each other's cursors
 - **Algorithm Visualization**: Step-by-step visualization of sorting and graph algorithms
 - **Interactive Controls**: Play, pause, step forward/backward, and speed control
 - **Auto-generated Explanations**: Each step includes human-readable explanations
-- **Session Management**: Create or join sessions with simple codes
-- **Replay System**: Record and replay algorithm executions
+- **Educational Content**: Learn how algorithms work with detailed explanations
 
 ## Supported Algorithms
 
@@ -20,9 +18,12 @@ A real-time, collaborative web application for visualizing algorithm execution s
 ## Tech Stack
 
 - **Frontend**: React + TypeScript + Tailwind CSS
-- **Backend**: Node.js + Express + Socket.IO
-- **Real-time**: WebSocket communication for live collaboration
 - **Visualization**: Custom React components with D3.js support
+- **Algorithms**: Generator functions for step-by-step execution
+
+## 🌐 Live Demo
+
+**Try it online**: [https://fonseca04lenin.github.io/collaborative-algorithm-visualizer/](https://fonseca04lenin.github.io/collaborative-algorithm-visualizer/)
 
 ## Getting Started
 
@@ -62,9 +63,6 @@ If you prefer to set up manually:
 # Install shared library dependencies
 cd shared && npm install && cd ..
 
-# Install backend dependencies  
-cd backend && npm install && cd ..
-
 # Install frontend dependencies
 cd frontend && npm install && cd ..
 ```
@@ -74,46 +72,26 @@ cd frontend && npm install && cd ..
 cd shared && npm run build && cd ..
 ```
 
-3. Start both servers:
+3. Start the frontend server:
 ```bash
-# Terminal 1 - Backend
-cd backend && npm run dev
-
-# Terminal 2 - Frontend  
 cd frontend && npm run dev
 ```
 
 ### Usage
 
-1. **Create a Session**: Click "Create New Session" to generate a session code
-2. **Join a Session**: Enter a session code to join an existing session
-3. **Select Algorithm**: Choose from available algorithms (Bubble Sort, BFS, DFS)
-4. **Configure Input**: Set up input data for the selected algorithm
-5. **Start Visualization**: Click "Start Visualization" to begin
-6. **Control Playback**: Use the controls to play, pause, step through, or reset
-7. **Collaborate**: Share the session code with others to collaborate in real-time
+1. **Select Algorithm**: Choose from available algorithms (Bubble Sort, BFS, DFS)
+2. **Configure Input**: Set up input data for the selected algorithm
+3. **Start Visualization**: Click "Start Visualization" to begin
+4. **Control Playback**: Use the controls to play, pause, step through, or reset
 
 ## Project Structure
 
 ```
-Collaborative-Web-App/
+Algorithm-Visualizer/
 ├── frontend/          # React frontend application
-├── backend/           # Node.js backend server
 ├── shared/            # Shared algorithms library
 └── README.md
 ```
-
-## API Endpoints
-
-- `POST /api/sessions` - Create a new session
-- `GET /api/sessions/:sessionId` - Get session information
-
-## WebSocket Events
-
-- `join-session` - Join a session
-- `cursor-move` - Broadcast cursor position
-- `update-session-state` - Update session state
-- `start-algorithm` - Start algorithm execution
 
 ## Contributing
 

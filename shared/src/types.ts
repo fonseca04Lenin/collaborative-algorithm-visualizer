@@ -48,7 +48,7 @@ export interface GraphEdge {
 
 export type AlgorithmType = 'bubbleSort' | 'mergeSort' | 'quickSort' | 'bfs' | 'dfs';
 
-export interface SessionState {
+export interface AlgorithmState {
   algorithm: AlgorithmType;
   currentStep: number;
   totalSteps: number;

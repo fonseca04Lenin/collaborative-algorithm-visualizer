@@ -5,5 +5,5 @@ export type {
   GraphNode,
   GraphEdge,
   AlgorithmType,
-  SessionState
+  AlgorithmState
 } from '../../shared/dist/types';

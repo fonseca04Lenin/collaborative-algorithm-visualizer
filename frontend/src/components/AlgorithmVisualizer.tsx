@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import AlgorithmSelector from './AlgorithmSelector';
 import ArrayVisualizer from './ArrayVisualizer';
 import GraphVisualizer from './GraphVisualizer';
 import Controls from './Controls';
-import type { SessionState, AlgorithmType, AlgorithmStep } from '../types';
+import type { AlgorithmType, AlgorithmStep } from '../types';
 import { bubbleSortSteps, mergeSortSteps, quickSortSteps } from '../algorithms/sorting';
 import { bfsSteps, dfsSteps } from '../algorithms/graph';
 
@@ -55,15 +54,15 @@ const getAlgorithmDescription = (algorithm: AlgorithmType): { title: string; des
 };
 
 interface AlgorithmVisualizerProps {
-  sessionState: SessionState | null;
-  onSessionStateUpdate: (state: SessionState) => void;
-  onStartAlgorithm: (algorithm: AlgorithmType, inputData: any) => void;
+  algorithm: AlgorithmType;
+  inputData: any;
+  onBack: () => void;
 }
 
 const AlgorithmVisualizer: React.FC<AlgorithmVisualizerProps> = ({
-  sessionState,
-  onSessionStateUpdate,
-  onStartAlgorithm
+  algorithm,
+  inputData,
+  onBack
 }) => {
   const [currentStep, setCurrentStep] = useState<AlgorithmStep | null>(null);
   const [steps, setSteps] = useState<AlgorithmStep[]>([]);
@@ -102,24 +101,13 @@ const AlgorithmVisualizer: React.FC<AlgorithmVisualizerProps> = ({
     return stepArray;
   };
 
-  const handleStartAlgorithm = (algorithm: AlgorithmType, inputData: any) => {
+  useEffect(() => {
     const newSteps = generateSteps(algorithm, inputData);
-    
-    const newState: SessionState = {
-      algorithm,
-      currentStep: 0,
-      totalSteps: newSteps.length,
-      isPlaying: false,
-      inputData,
-      steps: newSteps
-    };
-    
     setSteps(newSteps);
     setCurrentStep(newSteps[0] || null);
     setCurrentStepIndex(0);
-    onStartAlgorithm(algorithm, inputData);
-    onSessionStateUpdate(newState);
-  };
+    setIsPlaying(false);
+  }, [algorithm, inputData]);
 
   const handleStepChange = (stepIndex: number) => {
     if (stepIndex >= 0 && stepIndex < steps.length) {
@@ -172,14 +160,6 @@ const AlgorithmVisualizer: React.FC<AlgorithmVisualizerProps> = ({
           const nextStep = prevIndex + 1;
           if (nextStep < steps.length) {
             setCurrentStep(steps[nextStep]);
-            if (sessionState) {
-              const newState = {
-                ...sessionState,
-                currentStep: nextStep,
-                isPlaying: nextStep < steps.length - 1
-              };
-              onSessionStateUpdate(newState);
-            }
             if (nextStep >= steps.length - 1) {
               setIsPlaying(false);
             }
@@ -195,19 +175,19 @@ const AlgorithmVisualizer: React.FC<AlgorithmVisualizerProps> = ({
         clearInterval(interval);
       }
     };
-  }, [isPlaying, steps.length, playbackSpeed, sessionState, onSessionStateUpdate]);
+  }, [isPlaying, steps.length, playbackSpeed]);
 
   const renderVisualization = () => {
     if (!currentStep) return null;
 
-    switch (sessionState?.algorithm) {
+    switch (algorithm) {
       case 'bubbleSort':
       case 'mergeSort':
       case 'quickSort':
         return (
           <ArrayVisualizer
             step={currentStep}
-            algorithm={sessionState.algorithm}
+            algorithm={algorithm}
           />
         );
       case 'bfs':
@@ -215,7 +195,7 @@ const AlgorithmVisualizer: React.FC<AlgorithmVisualizerProps> = ({
         return (
           <GraphVisualizer
             step={currentStep}
-            algorithm={sessionState.algorithm}
+            algorithm={algorithm}
           />
         );
       default:
@@ -230,28 +210,27 @@ const AlgorithmVisualizer: React.FC<AlgorithmVisualizerProps> = ({
           <h1 className="text-xl font-semibold text-gray-800">
             Algorithm Visualizer
           </h1>
-          <div className="text-sm text-gray-500">
-            Algorithm: {sessionState?.algorithm || 'None'}
+          <div className="flex items-center space-x-4">
+            <div className="text-sm text-gray-500">
+              Algorithm: {algorithm}
+            </div>
+            <button
+              onClick={onBack}
+              className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+            >
+              Back
+            </button>
           </div>
         </div>
       </header>
 
-      <div className="flex-1 flex">
-        <div className="w-80 bg-white shadow-sm border-r p-6">
-          <AlgorithmSelector
-            onStartAlgorithm={handleStartAlgorithm}
-            currentAlgorithm={sessionState?.algorithm}
-          />
+        <div className="flex-1 p-6">
+          <div className="bg-white rounded-lg shadow-sm p-6 h-full">
+            {renderVisualization()}
+          </div>
         </div>
 
-        <div className="flex-1 flex flex-col">
-          <div className="flex-1 p-6">
-            <div className="bg-white rounded-lg shadow-sm p-6 h-full">
-              {renderVisualization()}
-            </div>
-          </div>
-
-          <div className="bg-white border-t p-6">
+        <div className="bg-white border-t p-6">
             <Controls
               currentStep={currentStepIndex}
               totalSteps={steps.length}
@@ -271,43 +250,41 @@ const AlgorithmVisualizer: React.FC<AlgorithmVisualizerProps> = ({
               </div>
             )}
 
-            {sessionState?.algorithm && (
-              <div className="mt-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6">
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-blue-900">
-                    About {getAlgorithmDescription(sessionState.algorithm).title}
-                  </h3>
+            <div className="mt-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6">
+              <div className="space-y-4">
+                <h3 className="text-xl font-bold text-blue-900">
+                  About {getAlgorithmDescription(algorithm).title}
+                </h3>
 
-                  <p className="text-blue-800 leading-relaxed">
-                    {getAlgorithmDescription(sessionState.algorithm).description}
-                  </p>
+                <p className="text-blue-800 leading-relaxed">
+                  {getAlgorithmDescription(algorithm).description}
+                </p>
 
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {getAlgorithmDescription(sessionState.algorithm).complexity && (
-                      <div className="bg-white border border-blue-200 rounded-md p-4">
-                        <h4 className="font-semibold text-blue-900 mb-2">
-                          Complexity Analysis
-                        </h4>
-                        <p className="text-sm text-blue-700 font-mono bg-blue-50 p-2 rounded">
-                          {getAlgorithmDescription(sessionState.algorithm).complexity}
-                        </p>
-                      </div>
-                    )}
+                <div className="grid md:grid-cols-2 gap-4">
+                  {getAlgorithmDescription(algorithm).complexity && (
+                    <div className="bg-white border border-blue-200 rounded-md p-4">
+                      <h4 className="font-semibold text-blue-900 mb-2">
+                        Complexity Analysis
+                      </h4>
+                      <p className="text-sm text-blue-700 font-mono bg-blue-50 p-2 rounded">
+                        {getAlgorithmDescription(algorithm).complexity}
+                      </p>
+                    </div>
+                  )}
 
-                    {getAlgorithmDescription(sessionState.algorithm).howItWorks && (
-                      <div className="bg-white border border-blue-200 rounded-md p-4">
-                        <h4 className="font-semibold text-blue-900 mb-2">
-                          How It Works
-                        </h4>
-                        <p className="text-sm text-blue-700 leading-relaxed">
-                          {getAlgorithmDescription(sessionState.algorithm).howItWorks}
-                        </p>
-                      </div>
-                    )}
-                  </div>
+                  {getAlgorithmDescription(algorithm).howItWorks && (
+                    <div className="bg-white border border-blue-200 rounded-md p-4">
+                      <h4 className="font-semibold text-blue-900 mb-2">
+                        How It Works
+                      </h4>
+                      <p className="text-sm text-blue-700 leading-relaxed">
+                        {getAlgorithmDescription(algorithm).howItWorks}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>

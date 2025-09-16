@@ -1,24 +1,35 @@
 import React, { useState } from 'react';
 import AlgorithmVisualizer from './components/AlgorithmVisualizer';
-import type { SessionState, AlgorithmType } from './types';
+import AlgorithmSelector from './components/AlgorithmSelector';
+import type { AlgorithmType } from './types';
 
 const App: React.FC = () => {
-  const [sessionState, setSessionState] = useState<SessionState | null>(null);
+  const [currentAlgorithm, setCurrentAlgorithm] = useState<AlgorithmType | null>(null);
+  const [inputData, setInputData] = useState<any>(null);
 
-  const handleSessionStateUpdate = (newState: SessionState) => {
-    setSessionState(newState);
+  const handleStartAlgorithm = (algorithm: AlgorithmType, data: any) => {
+    setCurrentAlgorithm(algorithm);
+    setInputData(data);
   };
 
-  const handleStartAlgorithm = (_algorithm: AlgorithmType, _inputData: any) => {
-  };
+  if (currentAlgorithm && inputData) {
+    return (
+      <div className="min-h-screen bg-gray-100">
+        <AlgorithmVisualizer
+          algorithm={currentAlgorithm}
+          inputData={inputData}
+          onBack={() => {
+            setCurrentAlgorithm(null);
+            setInputData(null);
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <AlgorithmVisualizer
-        sessionState={sessionState}
-        onSessionStateUpdate={handleSessionStateUpdate}
-        onStartAlgorithm={handleStartAlgorithm}
-      />
+      <AlgorithmSelector onStartAlgorithm={handleStartAlgorithm} />
     </div>
   );
 };
