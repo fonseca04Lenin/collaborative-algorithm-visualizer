@@ -224,66 +224,64 @@ const AlgorithmVisualizer: React.FC<AlgorithmVisualizerProps> = ({
         </div>
       </header>
 
-        <div className="flex-1 p-6">
-          <div className="bg-white rounded-lg shadow-sm p-6 h-full">
-            {renderVisualization()}
-          </div>
+      <div className="flex-1 p-6">
+        <div className="bg-white rounded-lg shadow-sm p-6 h-full">
+          {renderVisualization()}
         </div>
+      </div>
 
-        <div className="bg-white border-t p-6">
-            <Controls
-              currentStep={currentStepIndex}
-              totalSteps={steps.length}
-              isPlaying={isPlaying}
-              onStepChange={handleStepChange}
-              onPlayPause={handlePlayPause}
-              onReset={handleReset}
-              playbackSpeed={playbackSpeed}
-              onPlaybackSpeedChange={setPlaybackSpeed}
-            />
+      <div className="bg-white border-t p-6">
+        <Controls
+          currentStep={currentStepIndex}
+          totalSteps={steps.length}
+          isPlaying={isPlaying}
+          onStepChange={handleStepChange}
+          onPlayPause={handlePlayPause}
+          onReset={handleReset}
+          playbackSpeed={playbackSpeed}
+          onPlaybackSpeedChange={setPlaybackSpeed}
+        />
 
-            {currentStep && (
-              <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-                <p className="text-sm text-blue-800">
-                  <strong>Step {currentStep.stepNumber + 1}:</strong> {currentStep.explanation}
-                </p>
-              </div>
-            )}
+        {currentStep && (
+          <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+            <p className="text-sm text-blue-800">
+              <strong>Step {currentStep.stepNumber + 1}:</strong> {currentStep.explanation}
+            </p>
+          </div>
+        )}
 
-            <div className="mt-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6">
-              <div className="space-y-4">
-                <h3 className="text-xl font-bold text-blue-900">
-                  About {getAlgorithmDescription(algorithm).title}
-                </h3>
+        <div className="mt-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6">
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold text-blue-900">
+              About {getAlgorithmDescription(algorithm).title}
+            </h3>
 
-                <p className="text-blue-800 leading-relaxed">
-                  {getAlgorithmDescription(algorithm).description}
-                </p>
+            <p className="text-blue-800 leading-relaxed">
+              {getAlgorithmDescription(algorithm).description}
+            </p>
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  {getAlgorithmDescription(algorithm).complexity && (
-                    <div className="bg-white border border-blue-200 rounded-md p-4">
-                      <h4 className="font-semibold text-blue-900 mb-2">
-                        Complexity Analysis
-                      </h4>
-                      <p className="text-sm text-blue-700 font-mono bg-blue-50 p-2 rounded">
-                        {getAlgorithmDescription(algorithm).complexity}
-                      </p>
-                    </div>
-                  )}
-
-                  {getAlgorithmDescription(algorithm).howItWorks && (
-                    <div className="bg-white border border-blue-200 rounded-md p-4">
-                      <h4 className="font-semibold text-blue-900 mb-2">
-                        How It Works
-                      </h4>
-                      <p className="text-sm text-blue-700 leading-relaxed">
-                        {getAlgorithmDescription(algorithm).howItWorks}
-                      </p>
-                    </div>
-                  )}
+            <div className="grid md:grid-cols-2 gap-4">
+              {getAlgorithmDescription(algorithm).complexity && (
+                <div className="bg-white border border-blue-200 rounded-md p-4">
+                  <h4 className="font-semibold text-blue-900 mb-2">
+                    Complexity Analysis
+                  </h4>
+                  <p className="text-sm text-blue-700 font-mono bg-blue-50 p-2 rounded">
+                    {getAlgorithmDescription(algorithm).complexity}
+                  </p>
                 </div>
-              </div>
+              )}
+
+              {getAlgorithmDescription(algorithm).howItWorks && (
+                <div className="bg-white border border-blue-200 rounded-md p-4">
+                  <h4 className="font-semibold text-blue-900 mb-2">
+                    How It Works
+                  </h4>
+                  <p className="text-sm text-blue-700 leading-relaxed">
+                    {getAlgorithmDescription(algorithm).howItWorks}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>

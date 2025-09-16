@@ -230,6 +230,7 @@ const AlgorithmSelector: React.FC<AlgorithmSelectorProps> = ({
           </button>
         </div>
       </div>
+    </div>
   );
 };
 
