@@ -193,7 +193,7 @@ const AlgorithmSelector: React.FC<AlgorithmSelectorProps> = ({
                 ) : (
                   <div className="text-xs text-gray-500 mt-1">
                     <p>Valid formats: <code>[1,2,3]</code> or <code>1,2,3</code> or <code>1, 2, 3</code></p>
-                    <p>Current array: <span className="font-mono font-semibold">[{inputData.array.join(', ')}]</span></p>
+                    <p>Current array: <span className="font-mono font-semibold">[{inputData?.array?.join(', ') || ''}]</span></p>
                   </div>
                 )}
               </div>
@@ -205,15 +205,17 @@ const AlgorithmSelector: React.FC<AlgorithmSelectorProps> = ({
                   Start Node:
                 </label>
                 <select
-                  value={inputData.startNode}
+                  value={inputData?.startNode || 'A'}
                   onChange={(e) => setInputData({ ...inputData, startNode: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  {inputData.nodes?.map((node: any) => (
+                  {inputData?.nodes?.map((node: any) => (
                     <option key={node.id} value={node.id}>
                       {node.label}
                     </option>
-                  ))}
+                  )) || (
+                    <option value="A">A</option>
+                  )}
                 </select>
                 <p className="text-xs text-gray-500 mt-1">
                   Sample graph provided
